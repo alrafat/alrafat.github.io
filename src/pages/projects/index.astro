@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import Icon from '../../components/Icon.astro';
+const projects = (await getCollection('projects')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base title="Projects" description="Websites, apps and creative work by Abdulla Al Baki Rafat, including Doctor Kothay.">
+  <header class="page-head">
+    <div class="grid-bg"></div>
+    <div class="container">
+      <span class="eyebrow reveal">Beyond the lab</span>
+      <h1 class="reveal">Projects & creative work</h1>
+      <p class="reveal">Web products, design and photography I build on the side — usually to fix a problem I see around me. Some are live, some are still in progress.</p>
+    </div>
+  </header>
+  <section class="section" style="padding-top:30px">
+    <div class="container grid">
+      {projects.map((p) => <ProjectCard slug={p.id} data={p.data} />)}
+      <div class="card soon reveal">
+        <Icon name="camera" size={26} />
+        <h3>More coming soon</h3>
+        <p class="muted">New apps, websites, designs and photo stories will appear here.</p>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; }
+  .soon { border-style: dashed; display: flex; flex-direction: column; justify-content: center; gap: 10px; min-height: 260px; }
+  .soon :global(svg) { color: var(--accent); }
+  .soon h3 { font-size: 1.3rem; }
+  .soon p { margin: 0; }
+</style>

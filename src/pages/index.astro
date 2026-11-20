@@ -1,0 +1,349 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LogoBadge from '../components/LogoBadge.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Publications from '../components/Publications.astro';
+import { site } from '../data/site';
+import { stats, interests, researchExperience, workExperience, awards } from '../data/profile';
+import { research } from '../data/research';
+import { Image } from 'astro:assets';
+import labPhoto from '../assets/research/lab-pipetting-phenolics.jpg';
+import { photography } from '../data/photography';
+const teaser = [0, 10, 12, 18].map((i) => photography[i]).filter(Boolean);
+
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+const thesis = research[0];
+---
+<Base>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="grid-bg"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <span class="badge reveal"><span class="pulse"></span>{site.status}</span>
+        <h1 class="reveal">Abdulla Al Baki<br /><span class="grad">Rafat</span></h1>
+        <p class="role mono reveal">M.Sc. in Crop Botany <span class="dot">·</span> B.Sc. in Agriculture</p>
+        <p class="headline reveal">{site.headline}.</p>
+        <p class="intro reveal">{site.intro}</p>
+        <div class="cta reveal">
+          <a href="/research" class="btn primary">View research <Icon name="arrow" /></a>
+          <a href={site.cv} download class="btn"><Icon name="download" /> Download CV</a>
+          {site.links.linkedin && <a href={site.links.linkedin} target="_blank" rel="noopener" class="btn icon-only" aria-label="LinkedIn"><Icon name="linkedin" /></a>}
+        </div>
+      </div>
+      <div class="hero-photo reveal">
+        <div class="ring"></div>
+        <div class="frame"><img src={site.photo} alt={`Portrait of ${site.name}`} width="1106" height="1422" fetchpriority="high" /><span class="shade" aria-hidden="true"></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats-wrap">
+    <div class="container">
+      <div class="stats">
+        {stats.map((s) => (
+          <div class="stat reveal">
+            <div class="num"><span class="count" data-to={s.value}>{s.value}</span><span class="suf">{s.suffix}</span></div>
+            <div class="lbl">{s.label}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERESTS -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow="Research interests" title="What I want to study" lead="My M.Sc. left me with one question I most want to pursue: how water and nutrient conditions together shape what a plant invests in — from growth to protective chemistry." />
+      <div class="interests">
+        {interests.map((it, i) => (
+          <div class="card hover interest reveal" style={`transition-delay:${i * 50}ms`}>
+            <span class="idx mono">0{i + 1}</span>
+            <h3>{it.title}</h3>
+            <p class="muted">{it.text}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED RESEARCH -->
+  <section class="section alt">
+    <div class="container">
+      <SectionHeader eyebrow="Featured research" title="M.Sc. thesis" />
+      <div class="feature card reveal">
+        <div class="feature-main">
+          <div class="chips"><span class="chip">{thesis.kind}</span><span class="chip">{thesis.period}</span><span class="chip status-chip">{thesis.status}</span></div>
+          <h3>{thesis.title}</h3>
+          <p class="muted small">{thesis.people}<br />{thesis.funding}</p>
+          <blockquote>{thesis.question}</blockquote>
+          <a href="/research" class="btn">All research projects <Icon name="arrow" /></a>
+        </div>
+        <div class="feature-side">
+          <a href="/research#research-gallery" class="feature-photo" aria-label="See research photos">
+            <Image src={labPhoto} alt="Rafat pipetting reagents in the lab during his M.Sc. research" width={720} quality={75} format="webp" />
+            <span class="mono">In the lab · 2023</span>
+          </a>
+          <ul class="feature-points">
+            {thesis.points.map((p) => <li><Icon name="flask" size={16} /><span>{p}</span></li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PUBLICATIONS -->
+  <section class="section">
+    <div class="container narrow">
+      <SectionHeader eyebrow="Presentations & publications" title="Conference proceedings" />
+      <Publications />
+    </div>
+  </section>
+
+  <!-- EXPERIENCE + AWARDS -->
+  <section class="section alt">
+    <div class="container two-col">
+      <div>
+        <SectionHeader eyebrow="Experience" title="Research experience" />
+        <div class="timeline">
+          {researchExperience.map((e) => (
+            <div class="t-item reveal">
+              <span class="t-dot"></span>
+              <span class="mono t-period">{e.period}</span>
+              <h3>{e.title}</h3>
+              <p class="muted small">{e.org}</p>
+              <ul>{e.points.map((p) => <li>{p}</li>)}</ul>
+            </div>
+          ))}
+        </div>
+      </div>
+      <div>
+        <SectionHeader eyebrow="Recognition" title="Awards & honours" />
+        <div class="awards">
+          {awards.map((a) => (
+            <div class="award reveal">
+              <Icon name="award" size={20} />
+              <div><h4>{a.title}</h4><p class="muted small">{a.by}</p></div>
+              <span class="mono yr">{a.year}</span>
+            </div>
+          ))}
+        </div>
+        <a href="/cv" class="btn" style="margin-top:24px">Full CV <Icon name="arrow" /></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROFESSIONAL -->
+  <section class="section pro-sec">
+    <div class="container">
+      <SectionHeader eyebrow="Professional experience" title="Outside academia" lead="Three years working with U.S. healthcare teams sharpened my discipline with data, accuracy and people." />
+      {workExperience.map((e) => (
+        <div class="card pro reveal">
+          <div class="pro-head">
+            <div class="pro-id">
+              <LogoBadge name="radiant" size={52} link />
+              <div>
+                <h3>{e.title}</h3>
+                <p class="muted small">Radiant Data Systems Ltd · Dhaka</p>
+              </div>
+            </div>
+            <span class="chip">{e.period}</span>
+          </div>
+          <div class="partner"><span class="mono">Healthcare BPO partner for</span><LogoBadge name="amn" size={30} link /><span>AMN Healthcare, USA</span></div>
+          <ul class="pro-points">{e.points.map((p) => <li><Icon name="chart" size={16} /><span>{p}</span></li>)}</ul>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow="Beyond the lab" title="Things I build & create" lead="Alongside research, I design and build web products and creative work — mostly to solve problems I see around me in Bangladesh.">
+      </SectionHeader>
+      <a href="/photography" class="photo-teaser reveal" aria-label="Open photography collection">
+        {teaser.map((p) => <img src={p.thumb} alt={p.title} loading="lazy" width={p.w} height={p.h} />)}
+        <span class="pt-label"><Icon name="camera" size={18} /> Photography collection <Icon name="arrow" size={16} /></span>
+      </a>
+      <div class="projects">
+        {projects.map((p) => <ProjectCard slug={p.id} data={p.data} />)}
+        <a href="/projects" class="card hover more-card reveal">
+          <Icon name="code" size={28} />
+          <h3>More projects</h3>
+          <p class="muted">Websites, apps, design and photography — new work is added here as it ships.</p>
+          <span class="link-arrow">See all <Icon name="arrow" size={16} /></span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="contact card reveal">
+        <div class="grid-bg"></div>
+        <span class="eyebrow">Get in touch</span>
+        <h2>Looking for a motivated MS/PhD student?</h2>
+        <p class="muted">I'd be glad to talk about research opportunities in plant physiology, stress biology and nutrient management. References are available on request.</p>
+        <div class="cta center">
+          <a href={`mailto:${site.email}`} class="btn primary"><Icon name="mail" /> {site.email}</a>
+          <a href={site.cv} download class="btn"><Icon name="download" /> Download CV</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  // count-up for stats
+  const fmt = (v, d) => v.toFixed(d);
+  const cio = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    const el = e.target; cio.unobserve(el);
+    const target = el.dataset.to; const to = parseFloat(target);
+    const dec = (target.split('.')[1] || '').length;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const t0 = performance.now(), dur = 1400;
+    const step = (t) => { const k = Math.min(1, (t - t0) / dur); const ease = 1 - Math.pow(1 - k, 3); el.textContent = fmt(to * ease, dec); if (k < 1) requestAnimationFrame(step); else el.textContent = target; };
+    requestAnimationFrame(step);
+  }), { threshold: 0.5 });
+  document.querySelectorAll('.count').forEach((el) => cio.observe(el));
+</script>
+
+<style>
+  .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px; overflow: hidden; }
+  .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
+  .orb-1 { width: 520px; height: 520px; background: var(--glow); top: -120px; right: -100px; animation: drift 14s ease-in-out infinite alternate; }
+  .orb-2 { width: 380px; height: 380px; background: color-mix(in srgb, var(--accent-2) 18%, transparent); bottom: -120px; left: -120px; animation: drift 18s ease-in-out infinite alternate-reverse; }
+  @keyframes drift { to { transform: translate(-60px, 50px) scale(1.1); } }
+  .hero-inner { display: grid; grid-template-columns: 1.25fr 1fr; gap: 64px; align-items: center; position: relative; }
+  .badge { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+  .pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 0 var(--accent); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 60%, transparent); } 100% { box-shadow: 0 0 0 12px transparent; } }
+  h1 { font-size: clamp(2.8rem, 7vw, 5.2rem); line-height: 1; margin: 26px 0 22px; letter-spacing: -0.035em; font-weight: 700; }
+  .grad { background: linear-gradient(100deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .role { color: var(--accent); font-size: 0.9rem; margin: 0 0 18px; }
+  .role .dot { color: var(--faint); margin: 0 6px; }
+  .headline { font-family: var(--font-display); font-size: clamp(1.25rem, 2.4vw, 1.6rem); line-height: 1.35; margin: 0 0 16px; max-width: 560px; font-weight: 500; }
+  .intro { color: var(--muted); max-width: 560px; margin: 0 0 32px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta.center { justify-content: center; }
+  .icon-only { padding: 12px; }
+  .hero-photo { position: relative; justify-self: center; width: min(400px, 100%); }
+  .frame { position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid var(--border-strong); background: var(--bg-2); z-index: 1; }
+  .frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
+  .ring { position: absolute; inset: -14px; border-radius: 36px; background: conic-gradient(from 0deg, var(--accent), transparent 30%, var(--accent-2), transparent 70%, var(--accent)); filter: blur(18px); opacity: 0.55; animation: spin 12s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  /* shady treatment: dark fade from the bottom + soft green vignette */
+  .shade { position: absolute; inset: 0; pointer-events: none;
+    background:
+      linear-gradient(to top, color-mix(in srgb, var(--bg) 78%, transparent) 0%, color-mix(in srgb, var(--bg) 20%, transparent) 38%, transparent 62%),
+      radial-gradient(ellipse at 50% 35%, transparent 55%, color-mix(in srgb, var(--accent) 16%, transparent) 100%);
+    box-shadow: inset 0 0 60px color-mix(in srgb, var(--bg) 55%, transparent); }
+  :global(:root[data-theme='light']) .shade { background: linear-gradient(to top, color-mix(in srgb, var(--accent) 14%, transparent), transparent 45%); box-shadow: none; }
+  @media (max-width: 900px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 44px; }
+    .hero-photo { order: -1; width: min(280px, 72%); justify-self: center; margin-top: 8px; }
+    .hero { padding-top: 104px; min-height: auto; }
+  }
+  @media (max-width: 560px) {
+    .hero-photo { width: min(250px, 70%); }
+    .frame { border-radius: 24px; }
+    .ring { inset: -10px; border-radius: 30px; }
+    h1 { margin-top: 20px; }
+  }
+  @media (max-width: 420px) {
+    .cta .btn:not(.icon-only) { flex: 1 1 100%; justify-content: center; }
+  }
+
+  .pro-sec { padding-top: 40px; }
+  .pro { padding: 34px; }
+  .pro-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+  .pro h3 { font-size: 1.35rem; }
+  .pro-id { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+  .partner { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: -6px 0 24px; padding: 10px 14px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); font-size: 0.9rem; width: fit-content; max-width: 100%; }
+  .partner .mono { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .pro .small { margin: 6px 0 0; }
+  .pro-points { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 14px 32px; }
+  .pro-points li { display: grid; grid-template-columns: 26px 1fr; gap: 8px; color: var(--muted); font-size: 0.95rem; }
+  .pro-points :global(svg) { color: var(--accent-2); margin-top: 4px; }
+  @media (max-width: 760px) { .pro { padding: 24px; } .pro-points { grid-template-columns: 1fr; } }
+
+  .stats-wrap { position: relative; margin-top: -30px; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+  .stat { padding: 28px 26px; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: 0; }
+  .num { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em; }
+  .suf { color: var(--accent); font-size: 1.4rem; margin-left: 2px; }
+  .lbl { color: var(--muted); font-size: 0.88rem; }
+  @media (max-width: 800px) { .stats { grid-template-columns: 1fr 1fr; } .stat:nth-child(2) { border-right: 0; } .stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); } .num { font-size: 2rem; } .stat { padding: 22px 18px; } }
+
+  .interests { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .interest h3 { font-size: 1.2rem; margin: 18px 0 8px; }
+  .interest p { margin: 0; font-size: 0.95rem; }
+  .idx { color: var(--accent); font-size: 0.8rem; }
+  @media (max-width: 900px) { .interests { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .interests { grid-template-columns: 1fr; } }
+
+  .alt { background: linear-gradient(180deg, transparent, var(--bg-2) 20%, var(--bg-2) 80%, transparent); }
+  .feature { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; padding: 40px; }
+  .feature h3 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); margin: 18px 0 12px; line-height: 1.3; }
+  .small { font-size: 0.9rem; }
+  .status-chip { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  blockquote { margin: 20px 0 26px; padding: 4px 0 4px 18px; border-left: 2px solid var(--accent); font-family: var(--font-display); font-size: 1.1rem; line-height: 1.5; }
+  .feature-side { display: grid; gap: 26px; align-content: start; }
+  .feature-photo { position: relative; display: block; border-radius: 16px; overflow: hidden; border: 1px solid var(--border-strong); aspect-ratio: 16 / 10; }
+  .feature-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; transition: transform .6s; }
+  .feature-photo:hover img { transform: scale(1.04); }
+  .feature-photo span { position: absolute; left: 12px; bottom: 12px; font-size: 0.72rem; padding: 4px 10px; border-radius: 999px; background: rgba(4,10,7,.7); color: #cfe9d9; }
+  .photo-teaser { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; border-radius: var(--radius); overflow: hidden; }
+  .photo-teaser img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 12px; filter: saturate(.9) brightness(.8); transition: filter .4s, transform .6s; }
+  .photo-teaser:hover img { filter: none; }
+  .pt-label { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: inline-flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 999px; background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(10px); border: 1px solid var(--border-strong); font-weight: 600; white-space: nowrap; color: var(--text); }
+  .pt-label :global(svg) { color: var(--accent); }
+  @media (max-width: 700px) { .photo-teaser { grid-template-columns: 1fr 1fr; } }
+  .feature-points { list-style: none; margin: 0; padding: 0; display: grid; gap: 16px; align-content: start; }
+  .feature-points li { display: grid; grid-template-columns: 32px 1fr; gap: 10px; color: var(--muted); font-size: 0.95rem; }
+  .feature-points :global(svg) { color: var(--accent); margin-top: 4px; }
+  @media (max-width: 900px) { .feature { grid-template-columns: 1fr; padding: 26px; gap: 24px; } }
+
+  .narrow { max-width: 900px; }
+
+  .two-col { display: grid; grid-template-columns: 1.15fr 1fr; gap: 64px; }
+  @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; gap: 24px; } }
+  .timeline { position: relative; padding-left: 28px; border-left: 1px solid var(--border-strong); display: grid; gap: 36px; }
+  .t-item { position: relative; }
+  .t-dot { position: absolute; left: -34px; top: 6px; width: 11px; height: 11px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 14px var(--accent); }
+  .t-period { font-size: 0.78rem; color: var(--accent); }
+  .t-item h3 { font-size: 1.25rem; margin: 6px 0 4px; }
+  .t-item p { margin: 0 0 10px; }
+  .t-item ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 0.94rem; display: grid; gap: 6px; }
+  .awards { display: grid; gap: 12px; }
+  .award { display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: start; padding: 18px 20px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+  .award > :global(svg) { color: var(--accent); margin-top: 2px; }
+  .award h4 { font-size: 1rem; font-family: var(--font-sans); font-weight: 600; letter-spacing: 0; }
+  .award p { margin: 3px 0 0; font-size: 0.85rem; }
+  .yr { font-size: 0.72rem; color: var(--faint); white-space: nowrap; }
+
+  .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 18px; }
+  .more-card { display: flex; flex-direction: column; gap: 12px; justify-content: center; border-style: dashed; }
+  .more-card :global(svg) { color: var(--accent); }
+  .more-card h3 { font-size: 1.35rem; }
+  .more-card p { margin: 0; }
+  .link-arrow { display: inline-flex; align-items: center; gap: 6px; color: var(--accent); font-weight: 600; }
+
+  .contact { position: relative; overflow: hidden; text-align: center; padding: 72px 28px; }
+  .contact > :not(.grid-bg) { position: relative; }
+  .contact h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 16px auto 14px; max-width: 700px; }
+  .contact p { max-width: 560px; margin: 0 auto 30px; }
+  @media (max-width: 500px) { .contact .btn { width: 100%; justify-content: center; word-break: break-all; } }
+</style>

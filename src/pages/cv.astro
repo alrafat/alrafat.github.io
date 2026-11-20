@@ -1,0 +1,121 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LogoBadge from '../components/LogoBadge.astro';
+import { site } from '../data/site';
+import { education, workExperience, skills, fellowships, awards, tests, training, memberships, leadership, interests } from '../data/profile';
+import { research, publications } from '../data/research';
+---
+<Base title="CV" description="Curriculum vitae of Abdulla Al Baki Rafat — education, research, publications, skills, fellowships and awards.">
+  <header class="page-head">
+    <div class="grid-bg"></div>
+    <div class="container narrow">
+      <span class="eyebrow reveal">Curriculum vitae</span>
+      <h1 class="reveal">{site.name}</h1>
+      <p class="reveal">{site.role} · {site.location}</p>
+      <div class="cta reveal">
+        <a href={site.cv} download class="btn primary"><Icon name="download" /> Download PDF</a>
+        <a href={`mailto:${site.email}`} class="btn"><Icon name="mail" /> {site.email}</a>
+        {site.links.linkedin && <a href={site.links.linkedin} target="_blank" rel="noopener" class="btn"><Icon name="linkedin" /> LinkedIn</a>}
+      </div>
+    </div>
+  </header>
+
+  <div class="container narrow cv">
+    <section class="block reveal">
+      <h2>Education</h2>
+      {education.map((e) => (
+        <div class="row"><span class="when mono">{e.year}</span><div class="with-logo"><LogoBadge name="sau" size={48} link /><div><h3>{e.degree}</h3><p>{e.place}</p><p class="hl">{e.detail}</p></div></div></div>
+      ))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Research interests</h2>
+      <div class="chips">{interests.map((i) => <span class="chip">{i.title}</span>)}</div>
+    </section>
+
+    <section class="block reveal">
+      <h2>Research experience</h2>
+      {research.map((r) => (
+        <div class="row"><span class="when mono">{r.period}</span><div><h3>{r.title}</h3><p class="sub">{r.kind} · {r.people}</p><ul>{r.points.map((p) => <li>{p}</li>)}</ul></div></div>
+      ))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Conference proceedings</h2>
+      {publications.map((p) => (
+        <div class="row"><span class="when mono">{p.date.split(' ').pop()}</span><div><p class="cite"><span set:html={p.authors} />. “<span set:html={p.title} />.” <em>{p.venue}</em>, {p.date}. ({p.type}{p.award ? ` — ${p.award}` : ''})</p></div></div>
+      ))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Work experience</h2>
+      {workExperience.map((e) => (
+        <div class="row"><span class="when mono">{e.period}</span><div><div class="logos"><LogoBadge name="radiant" size={40} link /><LogoBadge name="amn" size={40} link /></div><h3>{e.title}</h3><p class="sub">{e.org}</p><ul>{e.points.map((p) => <li>{p}</li>)}</ul></div></div>
+      ))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Fellowships & scholarships</h2>
+      {fellowships.map((f) => (<div class="row"><span class="when mono">{f.year}</span><div><h3>{f.title}</h3><p>{f.by}</p></div></div>))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Awards</h2>
+      {awards.map((a) => (<div class="row"><span class="when mono">{a.year}</span><div><h3>{a.title}</h3><p>{a.by}</p></div></div>))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Test scores</h2>
+      {tests.map((t) => (<div class="row"><span class="when mono">{t.date}</span><div><h3>{t.name} — {t.score}</h3><p>{t.detail}</p></div></div>))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Skills</h2>
+      <div class="skills">
+        {skills.map((s) => (<div><h3>{s.group}</h3><div class="chips">{s.items.map((i) => <span class="chip">{i}</span>)}</div></div>))}
+      </div>
+    </section>
+
+    <section class="block reveal">
+      <h2>Training & courses</h2>
+      {training.map((t) => (<div class="row"><span class="when mono">{t.date}</span><div><h3>{t.title}</h3><p>{t.by}</p></div></div>))}
+    </section>
+
+    <section class="block reveal">
+      <h2>Memberships & activities</h2>
+      <ul class="plain">
+        {memberships.map((m) => <li>{m}</li>)}
+        {leadership.map((l) => <li>{l.role}, {l.org}</li>)}
+      </ul>
+    </section>
+
+    <section class="block reveal">
+      <h2>References</h2>
+      <p class="muted">Available on request.</p>
+    </section>
+  </div>
+</Base>
+<style>
+  .narrow { max-width: 900px; }
+  .cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .cv { padding-bottom: 60px; }
+  .block { padding: 36px 0; border-top: 1px solid var(--border); }
+  .block h2 { font-size: 0.82rem; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .14em; color: var(--accent); font-weight: 500; margin-bottom: 22px; }
+  .row { display: grid; grid-template-columns: 150px 1fr; gap: 24px; margin-bottom: 22px; }
+  .row:last-child { margin-bottom: 0; }
+  .when { font-size: 0.8rem; color: var(--faint); padding-top: 3px; }
+  h3 { font-size: 1.08rem; font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.005em; line-height: 1.4; }
+  .row p { margin: 3px 0 0; color: var(--muted); font-size: 0.95rem; }
+  .row .hl { color: var(--accent); font-family: var(--font-mono); font-size: 0.82rem; margin-top: 6px; }
+  .sub { font-size: 0.9rem !important; }
+  .cite :global(b) { color: var(--text); }
+  ul { margin: 10px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.94rem; display: grid; gap: 4px; }
+  .plain { margin: 0; }
+  .with-logo { display: grid; grid-template-columns: 48px 1fr; gap: 16px; align-items: start; }
+  .logos { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
+  .skills { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+  .row > div { min-width: 0; }
+  .skills h3 { margin-bottom: 10px; font-size: 0.98rem; }
+  @media (max-width: 700px) { .row { grid-template-columns: 1fr; gap: 4px; } .skills { grid-template-columns: minmax(0, 1fr); } }
+</style>

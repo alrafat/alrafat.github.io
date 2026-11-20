@@ -1,0 +1,54 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import Gallery from '../components/Gallery.astro';
+import { photography, flickrProfile } from '../data/photography';
+
+const categories = [...new Set(photography.map((p) => p.category))];
+const items = photography.map((p) => ({
+  thumb: p.thumb, full: p.full, w: p.w, h: p.h, caption: p.title, tag: p.category, href: p.page,
+}));
+---
+<Base title="Photography" description="Street, people, nature and landscape photography by Abdulla Al Baki Rafat, from Bangladesh.">
+  <header class="page-head">
+    <div class="grid-bg"></div>
+    <div class="container">
+      <span class="eyebrow reveal">Photography</span>
+      <h1 class="reveal">Through my lens</h1>
+      <p class="reveal">Street life, people, nature and landscapes from around Bangladesh. Photography taught me patience and how to look closely, which helps in the field and the lab too.</p>
+      <div class="filters reveal" role="group" aria-label="Filter photos">
+        <button type="button" class="chip f active" data-cat="all">All</button>
+        {categories.map((c) => <button type="button" class="chip f" data-cat={c}>{c}</button>)}
+      </div>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:24px">
+    <div class="container">
+      <Gallery id="photos" items={items} />
+      <div class="more reveal">
+        <a href={flickrProfile} target="_blank" rel="noopener" class="btn primary"><Icon name="flickr" /> Full collection on Flickr <Icon name="external" size={15} /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script is:inline>
+  (() => {
+    const btns = document.querySelectorAll('.filters .f');
+    const figs = document.querySelectorAll('[data-gallery="photos"] .g-item');
+    const tags = [...figs].map((f) => f.querySelector('.g-tag')?.textContent);
+    btns.forEach((b) => b.addEventListener('click', () => {
+      btns.forEach((x) => x.classList.toggle('active', x === b));
+      figs.forEach((f, i) => { f.style.display = b.dataset.cat === 'all' || tags[i] === b.dataset.cat ? '' : 'none'; });
+    }));
+  })();
+</script>
+
+<style>
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
+  .f { background: transparent; cursor: pointer; font-size: 0.78rem; padding: 7px 14px; transition: all .2s; }
+  .f:hover { color: var(--text); border-color: var(--accent); }
+  .f.active { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .more { display: flex; justify-content: center; margin-top: 36px; }
+</style>

@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro';
+interface Props {
+  slug: string;
+  data: { title: string; summary: string; status: string; category: string; tags: string[]; url?: string; image?: string; year: string };
+}
+const { slug, data } = Astro.props;
+const host = data.url ? new URL(data.url).host : '';
+---
+<article class="card hover pc reveal">
+  <a href={`/projects/${slug}`} class="cover" aria-label={`${data.title} details`}>
+    {data.image ? (
+      <img src={data.image} alt={`Screenshot of ${data.title}`} loading="lazy" />
+    ) : (
+      <div class="placeholder">
+        <span class="ph-title">{data.title}</span>
+        {host && <span class="ph-url mono">{host}</span>}
+      </div>
+    )}
+  </a>
+  <div class="meta">
+    <span class:list={['status', data.status.toLowerCase()]}><i></i>{data.status}</span>
+    <span class="mono muted small">{data.category} · {data.year}</span>
+  </div>
+  <h3><a href={`/projects/${slug}`}>{data.title}</a></h3>
+  <p class="muted">{data.summary}</p>
+  <div class="chips">{data.tags.map((t) => <span class="chip">{t}</span>)}</div>
+  <div class="actions">
+    <a href={`/projects/${slug}`} class="more">Case study <Icon name="arrow" size={16} /></a>
+    {data.url && <a href={data.url} target="_blank" rel="noopener" class="more">Visit <Icon name="external" size={15} /></a>}
+  </div>
+</article>
+<style>
+  .pc { padding: 14px 14px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .pc > :not(.cover) { margin-left: 10px; margin-right: 10px; }
+  .cover { display: block; border-radius: 12px; overflow: hidden; aspect-ratio: 16 / 9; border: 1px solid var(--border); }
+  .cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+  .pc:hover .cover img { transform: scale(1.03); }
+  .placeholder { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; position: relative;
+    background: radial-gradient(circle at 30% 20%, color-mix(in srgb, var(--accent) 30%, transparent), transparent 55%), radial-gradient(circle at 80% 90%, color-mix(in srgb, var(--accent-2) 28%, transparent), transparent 50%), var(--bg-2); }
+  .ph-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; }
+  .ph-url { font-size: 0.78rem; color: var(--muted); }
+  .meta { display: flex; justify-content: space-between; align-items: center; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+  .small { font-size: 0.75rem; }
+  .status { font-family: var(--font-mono); font-size: 0.72rem; display: inline-flex; align-items: center; gap: 7px; color: var(--accent); }
+  .status i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; box-shadow: 0 0 10px currentColor; }
+  .status.ongoing { color: #f5c451; }
+  .status.concept, .status.archived { color: var(--muted); }
+  h3 { font-size: 1.35rem; }
+  h3 a:hover { color: var(--accent); }
+  p { margin: 0; font-size: 0.96rem; }
+  .actions { display: flex; gap: 20px; margin-top: auto; padding-top: 6px; }
+  .more { display: inline-flex; align-items: center; gap: 6px; font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+</style>

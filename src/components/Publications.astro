@@ -1,0 +1,38 @@
+---
+import { publications, inPrep } from '../data/research';
+import Icon from './Icon.astro';
+---
+<ol class="pubs">
+  {publications.map((p, i) => (
+    <li class="pub reveal">
+      <span class="num mono">{String(publications.length - i).padStart(2, '0')}</span>
+      <div>
+        <p class="authors" set:html={p.authors} />
+        <h3 set:html={p.title} />
+        <p class="venue"><em>{p.venue}</em>, {p.date}</p>
+        <div class="chips">
+          <span class="chip">{p.type}</span>
+          {p.award && <span class="chip award"><Icon name="award" size={13} /> {p.award}</span>}
+        </div>
+      </div>
+    </li>
+  ))}
+</ol>
+<div class="prep reveal">
+  <span class="mono label">In preparation</span>
+  <ul>{inPrep.map((t) => <li>{t}</li>)}</ul>
+</div>
+<style>
+  .pubs { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  .pub { display: grid; grid-template-columns: 52px 1fr; gap: 16px; padding: 26px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); }
+  .num { color: var(--accent); font-size: 0.9rem; padding-top: 3px; }
+  .authors { margin: 0 0 6px; color: var(--muted); font-size: 0.92rem; }
+  .authors :global(b) { color: var(--text); }
+  h3 { font-size: 1.12rem; font-family: var(--font-sans); font-weight: 600; letter-spacing: -0.01em; line-height: 1.45; }
+  .venue { margin: 8px 0 14px; color: var(--muted); font-size: 0.92rem; }
+  .award { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); display: inline-flex; gap: 6px; align-items: center; }
+  .prep { margin-top: 18px; padding: 20px 26px; border: 1px dashed var(--border-strong); border-radius: var(--radius); }
+  .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--accent-2); }
+  .prep ul { margin: 8px 0 0; padding-left: 18px; color: var(--muted); font-size: 0.94rem; }
+  @media (max-width: 600px) { .pub { grid-template-columns: 1fr; gap: 6px; padding: 20px; } }
+</style>

@@ -1,0 +1,99 @@
+---
+import Base from '../layouts/Base.astro';
+import Icon from '../components/Icon.astro';
+import LogoBadge from '../components/LogoBadge.astro';
+import SectionHeader from '../components/SectionHeader.astro';
+import Publications from '../components/Publications.astro';
+import { research } from '../data/research';
+import { interests, skills } from '../data/profile';
+import Gallery from '../components/Gallery.astro';
+import { getResearchGallery } from '../lib/researchGallery';
+const gallery = await getResearchGallery();
+const labSkills = skills.filter((s) => ['Laboratory', 'Statistics & Data', 'Bioinformatics & GIS'].includes(s.group));
+---
+<Base title="Research" description="Research projects, methods and conference presentations of Abdulla Al Baki Rafat — black pepper agronomy, antioxidant chemistry and rhizosphere microbiology.">
+  <header class="page-head">
+    <div class="grid-bg"></div>
+    <div class="container">
+      <span class="eyebrow reveal">Research</span>
+      <h1 class="reveal">Field, lab and data</h1>
+      <p class="reveal">My research so far has centred on black pepper (<i>Piper nigrum</i> L.) in Sylhet — how management practices change yield and fruit chemistry, and which microbes live around its roots.</p>
+      <div class="chips reveal" style="margin-top:22px">{interests.map((i) => <span class="chip">{i.title}</span>)}</div>
+    </div>
+  </header>
+
+  <section class="section" style="padding-top:40px">
+    <div class="container projects">
+      {research.map((r, i) => (
+        <article class="card proj reveal" id={r.slug}>
+          <div class="side">
+            <span class="n mono">{String(i + 1).padStart(2, '0')}</span>
+            <span class="mono kind">{r.kind}</span>
+            <span class="mono muted per">{r.period}</span>
+            <span class="org"><LogoBadge name="sau" size={34} link /><span class="mono">SAU</span></span>
+            <span class="chip st">{r.status}</span>
+          </div>
+          <div class="body">
+            <h2>{r.title}</h2>
+            <p class="muted small">{r.people}{r.funding && <><br />{r.funding}</>}</p>
+            <div class="q"><span class="mono">Question</span><p>{r.question}</p></div>
+            <ul>{r.points.map((p) => <li><Icon name="leaf" size={15} /><span>{p}</span></li>)}</ul>
+            <div class="chips">{r.methods.map((m) => <span class="chip">{m}</span>)}</div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section" id="research-gallery" style="padding-top:20px">
+    <div class="container">
+      <SectionHeader eyebrow="From the field & lab" title="Inside my M.Sc. research" lead="Moments from the analysis of black pepper fruit: extractions, antioxidant assays and spectrophotometry at Sylhet Agricultural University (2023). Tap a photo to enlarge it." />
+      <Gallery id="research" items={gallery} />
+    </div>
+  </section>
+
+  <section class="section alt">
+    <div class="container narrow">
+      <SectionHeader eyebrow="Dissemination" title="Presentations & publications" />
+      <Publications />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <SectionHeader eyebrow="Toolkit" title="Methods & tools" lead="Techniques I have used hands-on in my thesis and research assistant work." />
+      <div class="toolkit">
+        {labSkills.map((s) => (
+          <div class="card reveal">
+            <h3>{s.group}</h3>
+            <div class="chips">{s.items.map((it) => <span class="chip">{it}</span>)}</div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .projects { display: grid; gap: 20px; }
+  .proj { display: grid; grid-template-columns: 190px 1fr; gap: 36px; padding: 36px; }
+  .side { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; }
+  .n { font-size: 2.6rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 10px; font-family: var(--font-display); }
+  .kind { font-size: 0.82rem; }
+  .per { font-size: 0.78rem; }
+  .org { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-size: 0.72rem; color: var(--muted); }
+  .st { margin-top: 10px; color: var(--accent); border-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  h2 { font-size: clamp(1.25rem, 2.3vw, 1.6rem); line-height: 1.3; }
+  .small { font-size: 0.9rem; margin: 10px 0 0; }
+  .q { margin: 22px 0; padding: 16px 20px; border-radius: 12px; background: var(--surface-2); border: 1px solid var(--border); }
+  .q span { font-size: 0.7rem; letter-spacing: .12em; text-transform: uppercase; color: var(--accent-2); }
+  .q p { margin: 4px 0 0; font-family: var(--font-display); font-size: 1.05rem; }
+  ul { list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 10px; }
+  li { display: grid; grid-template-columns: 22px 1fr; gap: 8px; color: var(--muted); font-size: 0.96rem; }
+  li :global(svg) { color: var(--accent); margin-top: 5px; }
+  @media (max-width: 800px) { .proj { grid-template-columns: 1fr; gap: 16px; padding: 24px; } .side { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 10px; } .n { font-size: 1.6rem; margin: 0; } .st { margin: 0; } }
+  .alt { background: linear-gradient(180deg, transparent, var(--bg-2) 20%, var(--bg-2) 80%, transparent); }
+  .narrow { max-width: 900px; }
+  .toolkit { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .toolkit h3 { font-size: 1.1rem; margin-bottom: 16px; }
+  @media (max-width: 900px) { .toolkit { grid-template-columns: minmax(0, 1fr); } }
+</style>

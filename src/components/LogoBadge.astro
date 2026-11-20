@@ -1,0 +1,32 @@
+---
+// Organisation logo in a small tile. Logos live in public/images/logos/.
+const logos = {
+  radiant: { src: '/images/logos/radiant.png', alt: 'Radiant Data Systems', bg: 'dark', wide: true, url: 'https://www.radiantds.com/' },
+  amn: { src: '/images/logos/amn.png', alt: 'AMN Healthcare', bg: 'light', wide: true, url: 'https://www.amnhealthcare.com/' },
+  sau: { src: '/images/logos/sau.png', alt: 'Sylhet Agricultural University', bg: 'light', wide: false, url: 'https://sau.ac.bd/' },
+  saups: { src: '/images/logos/saups.png', alt: 'SAU Photographic Society', bg: 'light', wide: false, url: '' },
+  iaas: { src: '/images/logos/iaas.png', alt: 'IAAS Bangladesh', bg: 'light', wide: false, url: '' },
+  pathshala: { src: '/images/logos/pathshala.png', alt: 'Pathshala Ekush', bg: 'light', wide: false, url: '' },
+  pradhikar: { src: '/images/logos/pradhikar.png', alt: 'Pradhikar', bg: 'dark', wide: false, url: '' },
+} as const;
+interface Props { name: keyof typeof logos; size?: number; link?: boolean }
+const { name, size = 48, link = false } = Astro.props;
+const l = logos[name];
+const w = l.wide ? Math.round(size * 2.6) : size;
+const Tag = link && l.url ? 'a' : 'span';
+---
+<Tag
+  class:list={['logo', l.bg]}
+  style={`width:${w}px;height:${size}px;padding:${Math.max(2, Math.round(size * 0.1))}px ${Math.max(3, Math.round(size * 0.16))}px;border-radius:${Math.max(6, Math.round(size * 0.25))}px`}
+  {...(Tag === 'a' ? { href: l.url, target: '_blank', rel: 'noopener', title: l.alt } : { title: l.alt })}
+>
+  <img src={l.src} alt={l.alt} loading="lazy" decoding="async" />
+</Tag>
+<style>
+  .logo { display: inline-grid; place-items: center; flex: none; border-radius: 12px; padding: 5px 8px; border: 1px solid var(--border-strong); vertical-align: middle; }
+  .logo.light { background: #ffffff; }
+  .logo.dark { background: #0d1512; }
+  .logo img { width: 100%; height: 100%; object-fit: contain; }
+  a.logo { transition: transform .2s, border-color .2s; }
+  a.logo:hover { transform: translateY(-1px); border-color: var(--accent); }
+</style>
