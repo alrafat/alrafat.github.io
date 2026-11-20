@@ -44,7 +44,7 @@ const thesis = research[0];
       </div>
       <div class="hero-photo reveal">
         <div class="ring"></div>
-        <div class="frame"><img src={site.photo} alt={`Portrait of ${site.name}`} width="1106" height="1422" fetchpriority="high" /><span class="shade" aria-hidden="true"></span></div>
+        <img class="cutout" src="/images/rafat-hero.webp" alt={`Portrait of ${site.name}`} width="900" height="1027" fetchpriority="high" />
       </div>
     </div>
   </section>
@@ -66,7 +66,7 @@ const thesis = research[0];
   <!-- INTERESTS -->
   <section class="section">
     <div class="container">
-      <SectionHeader eyebrow="Research interests" title="What I want to study" lead="My M.Sc. left me with one question I most want to pursue: how water and nutrient conditions together shape what a plant invests in — from growth to protective chemistry." />
+      <SectionHeader eyebrow="Research interests" title="What I want to study" lead="Where plant science meets the lab bench and smart technology: that's where I want to work." />
       <div class="interests">
         {interests.map((it, i) => (
           <div class="card hover interest reveal" style={`transition-delay:${i * 50}ms`}>
@@ -244,27 +244,19 @@ const thesis = research[0];
   .cta { display: flex; gap: 12px; flex-wrap: wrap; }
   .cta.center { justify-content: center; }
   .icon-only { padding: 12px; }
-  .hero-photo { position: relative; justify-self: center; width: min(400px, 100%); }
-  .frame { position: relative; border-radius: 28px; overflow: hidden; aspect-ratio: 4 / 5; border: 1px solid var(--border-strong); background: var(--bg-2); z-index: 1; }
-  .frame img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; }
-  .ring { position: absolute; inset: -14px; border-radius: 36px; background: conic-gradient(from 0deg, var(--accent), transparent 30%, var(--accent-2), transparent 70%, var(--accent)); filter: blur(18px); opacity: 0.55; animation: spin 12s linear infinite; }
+  /* frameless portrait (background removed, edges faded) with the rotating glow behind */
+  .hero-photo { position: relative; justify-self: center; width: min(420px, 100%); aspect-ratio: 900 / 1027; margin-bottom: -60px; transform: translateY(-50px); }
+  .cutout { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: contain; }
+  .ring { position: absolute; inset: 6% 12% 26% 12%; border-radius: 40px; background: conic-gradient(from 0deg, var(--accent), transparent 30%, var(--accent-2), transparent 70%, var(--accent)); filter: blur(24px); opacity: 0.75; animation: spin 12s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
-  /* shady treatment: dark fade from the bottom + soft green vignette */
-  .shade { position: absolute; inset: 0; pointer-events: none;
-    background:
-      linear-gradient(to top, color-mix(in srgb, var(--bg) 78%, transparent) 0%, color-mix(in srgb, var(--bg) 20%, transparent) 38%, transparent 62%),
-      radial-gradient(ellipse at 50% 35%, transparent 55%, color-mix(in srgb, var(--accent) 16%, transparent) 100%);
-    box-shadow: inset 0 0 60px color-mix(in srgb, var(--bg) 55%, transparent); }
-  :global(:root[data-theme='light']) .shade { background: linear-gradient(to top, color-mix(in srgb, var(--accent) 14%, transparent), transparent 45%); box-shadow: none; }
   @media (max-width: 900px) {
     .hero-inner { grid-template-columns: 1fr; gap: 44px; }
-    .hero-photo { order: -1; width: min(280px, 72%); justify-self: center; margin-top: 8px; }
+    .hero-photo { order: -1; width: min(300px, 76%); justify-self: center; margin: 8px 0 -20px; transform: none; }
     .hero { padding-top: 104px; min-height: auto; }
   }
   @media (max-width: 560px) {
-    .hero-photo { width: min(250px, 70%); }
-    .frame { border-radius: 24px; }
-    .ring { inset: -10px; border-radius: 30px; }
+    .hero-photo { width: min(270px, 74%); }
+    .ring { border-radius: 30px; }
     h1 { margin-top: 20px; }
   }
   @media (max-width: 420px) {
