@@ -24,14 +24,17 @@ const thesis = research[0];
   <!-- HERO -->
   <section class="hero">
     <div class="grid-bg"></div>
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
+    <div class="glow-layer" aria-hidden="true">
+      <div class="orb orb-1"></div>
+      <div class="orb orb-2"></div>
+    </div>
     <div class="container hero-inner">
       <div class="hero-text">
         <span class="badge reveal"><span class="pulse"></span>{site.status}</span>
         <h1 class="reveal">Abdulla Al Baki<br /><span class="grad">Rafat</span></h1>
         <p class="role mono reveal">M.Sc. in Crop Botany <span class="dot">·</span> B.Sc. in Agriculture</p>
         <p class="headline reveal">{site.headline}.</p>
+        <p class="hook reveal">{site.introHook}</p>
         <p class="intro reveal">{site.intro}</p>
         <div class="cta reveal">
           <a href="/research" class="btn primary">View research <Icon name="arrow" /></a>
@@ -145,7 +148,7 @@ const thesis = research[0];
   <!-- PROFESSIONAL -->
   <section class="section pro-sec">
     <div class="container">
-      <SectionHeader eyebrow="Professional experience" title="Outside academia" lead="Three years working with U.S. healthcare teams sharpened my discipline with data, accuracy and people." />
+      <SectionHeader eyebrow="Professional experience" title="Outside academia" lead="Three years in U.S. Healthcare credentialing sharpened my discipline with data, accuracy and people." />
       {workExperience.map((e) => (
         <div class="card pro reveal">
           <div class="pro-head">
@@ -221,9 +224,11 @@ const thesis = research[0];
 
 <style>
   .hero { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 120px 0 80px; overflow: hidden; }
+  /* fade every background layer out before the hero's bottom edge, so no glow is cut off in a hard line */
+  .glow-layer { position: absolute; inset: 0; pointer-events: none; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%); mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%); }
   .orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; }
   .orb-1 { width: 520px; height: 520px; background: var(--glow); top: -120px; right: -100px; animation: drift 14s ease-in-out infinite alternate; }
-  .orb-2 { width: 380px; height: 380px; background: color-mix(in srgb, var(--accent-2) 18%, transparent); bottom: -120px; left: -120px; animation: drift 18s ease-in-out infinite alternate-reverse; }
+  .orb-2 { width: 380px; height: 380px; background: color-mix(in srgb, var(--accent-2) 18%, transparent); bottom: 80px; left: -140px; animation: drift 18s ease-in-out infinite alternate-reverse; }
   @keyframes drift { to { transform: translate(-60px, 50px) scale(1.1); } }
   .hero-inner { display: grid; grid-template-columns: 1.25fr 1fr; gap: 64px; align-items: center; position: relative; }
   .badge { display: inline-flex; align-items: center; gap: 10px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--border-strong); background: var(--surface); font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
@@ -234,6 +239,7 @@ const thesis = research[0];
   .role { color: var(--accent); font-size: 0.9rem; margin: 0 0 18px; }
   .role .dot { color: var(--faint); margin: 0 6px; }
   .headline { font-family: var(--font-display); font-size: clamp(1.25rem, 2.4vw, 1.6rem); line-height: 1.35; margin: 0 0 16px; max-width: 560px; font-weight: 500; }
+  .hook { font-family: var(--font-display); font-size: clamp(1.05rem, 1.8vw, 1.25rem); color: var(--text); margin: 0 0 10px; max-width: 560px; }
   .intro { color: var(--muted); max-width: 560px; margin: 0 0 32px; }
   .cta { display: flex; gap: 12px; flex-wrap: wrap; }
   .cta.center { justify-content: center; }
@@ -279,7 +285,7 @@ const thesis = research[0];
   @media (max-width: 760px) { .pro { padding: 24px; } .pro-points { grid-template-columns: 1fr; } }
 
   .stats-wrap { position: relative; margin-top: -30px; }
-  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); overflow: hidden; }
   .stat { padding: 28px 26px; border-right: 1px solid var(--border); }
   .stat:last-child { border-right: 0; }
   .num { font-family: var(--font-display); font-size: 2.4rem; font-weight: 700; letter-spacing: -0.03em; }

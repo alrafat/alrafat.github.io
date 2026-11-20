@@ -40,8 +40,8 @@ export const research = [
     funding: '',
     question: 'Which bacteria live around black pepper roots, and how might they interact with nutrient conditions?',
     points: [
-      'Collected soil and isolated 28 rhizospheric bacterial strains from black pepper roots.',
-      'Ran biochemical tests (catalase, oxidase, indole, methyl red, Voges–Proskauer, TSI, SIM) that placed the isolates in ten genera.',
+      'Assisted a colleague in collecting rhizosphere soil and isolating 28 bacterial strains from black pepper roots.',
+      'Assisted with biochemical tests (catalase, oxidase, indole, methyl red, Voges–Proskauer, TSI, SIM) that placed the isolates in ten genera.',
     ],
     methods: ['Microbial isolation', 'Biochemical characterization', 'Aseptic technique'],
     status: 'Manuscript in preparation',
@@ -69,5 +69,5 @@ export const publications = [
 
 export const inPrep = [
   'Agronomic practices, chemical composition and antioxidant activity of black pepper (Piper nigrum L.) — manuscript in preparation.',
-  'Bacterial diversity in the rhizosphere of black pepper in Sylhet — manuscript in preparation (co-author).',
+  'Bacterial diversity in the rhizosphere of black pepper in Sylhet — manuscript in preparation.',
 ];

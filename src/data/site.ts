@@ -14,9 +14,10 @@ export const site = {
 
   // Hero text
   role: 'M.Sc. in Crop Botany',
-  headline: 'Prospective MS/PhD student in plant physiology & stress biology',
+  headline: 'Prospective MS/PhD student in Plant Science',
+  introHook: 'Every plant is a chemistry lab. I want to work in one.',
   intro:
-    'Interested in how water and nutrient conditions shape plant growth and protective chemistry. I bring hands-on field and lab research, data analysis in R, and three years of work with U.S. healthcare teams. Outside the lab, I build websites, design, and take photographs.',
+    'Field and bench research in plant science. Three years in U.S. Healthcare credentialing. Beyond research, I build products, design and take photographs.',
   status: 'Open to MS/PhD positions for Fall 2027',
 
   description:

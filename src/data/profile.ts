@@ -10,12 +10,12 @@ export const stats = [
 ];
 
 export const interests = [
+  { title: 'Plant Science', text: 'Secondary metabolism, antioxidants and plant–microbe interactions.' },
   { title: 'Plant Physiology', text: 'How plants allocate resources between growth and defence.' },
   { title: 'Plant Stress', text: 'Responses to flooding, drought and other environmental extremes.' },
   { title: 'Plant Nutrient Management', text: 'Fertilizer and irrigation regimes and their effect on plant chemistry.' },
   { title: 'Controlled Environment Agriculture', text: 'Growing crops under precisely managed conditions.' },
   { title: 'Precision Agriculture', text: 'Data-driven decisions in the field.' },
-  { title: 'Plant Science', text: 'Secondary metabolism, antioxidants and plant–microbe interactions.' },
 ];
 
 export const education = [
@@ -55,7 +55,7 @@ export const researchExperience = [
     org: 'Sylhet Agricultural University — PI: Dr. Md. Masudur Rahman',
     points: [
       'Good Agricultural Practices for black pepper across agro-ecological regions of Sylhet: fieldwork, soil preparation, monitoring flowering and fruit set, yield data analysis.',
-      'Bacterial diversity in the black pepper rhizosphere: isolated rhizospheric bacteria and ran biochemical tests to differentiate isolates.',
+      'Bacterial diversity in the black pepper rhizosphere: assisted a colleague in isolating rhizospheric bacteria and running biochemical tests to differentiate the isolates.',
     ],
   },
 ];
